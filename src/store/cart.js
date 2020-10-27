@@ -18,12 +18,13 @@ export default (state = initalState, action) => {
             var isExist = false
             cart.forEach(item =>{
                 if(item.product.name == payload.name){
-                    if(item.product.inStok >item.quantity){
+                    console.log('item.product.inStock',item.product.inStock);
+                    if(item.product.inStock >item.quantity){
                         item.quantity++;
                         isExist = true;
                     }else{
                         isExist = true;
-                        alert('No available items in the stok!!');
+                        // alert('No available items in the stok!!');
                     }
                 }
             })
