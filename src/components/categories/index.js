@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect }  from 'react';
 import { connect } from 'react-redux';
 import { selectCategory } from '../../store/categories';
 import PropTypes from 'prop-types';
@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import { left } from '@popperjs/core';
 import Button from '@material-ui/core/Button';
+import { getRemoteData } from '../../store/actions'
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -20,6 +21,7 @@ function TabPanel(props) {
             },
         },
     }));
+
     return (
         <div
             role="tabpanel"
@@ -61,24 +63,24 @@ const Status = props => {
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
     const handleChange = (event, newValue) => {
-        console.log('event.target.textContent>>>',event.target.textContent);
-        props.selectCategory(event.target.textContent)
+        console.log('event.target.textContent>>>',event.target);
+        // props.selectCategory(event.target.textContent)
         setValue(newValue);
     };
-    console.log('----', props);
-    // let selectedCategory = props.selectCategory;
-    // function handleCategoryClick(e) {
-    //     // console.log(e.target.textContent);
-    //     // selectedCategory = e.target.textContent
-    //     selectCategory(e.target.textContent)
-    // }
+
+    useEffect(() => {
+        console.log('I am Working !!!!!!!!!!!!!!!!');
+        props.getRemoteData()
+        props.selectCategory()
+       },[]);
+    //    console.log("props ====> ", props)
     return (
         <>
             <div className={classes.root}>
                 <AppBar position="static" style={{ marginTop: '65px' }}>
                     <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
                         {props.categories.map((category, idx) => {
-                            return <Tab key={idx} label={category} {...a11yProps(idx)} />
+                            return <Tab onClick={()=>{props.selectCategory(category.name)}} key={idx} label={category.display_name} {...a11yProps(idx)} />
                         })}
                     </Tabs>
                 </AppBar>
@@ -90,6 +92,6 @@ const Status = props => {
 const mapStateToProps = state => ({
     categories: state.categories.categories,
 });
-const mapDispatchToProps = { selectCategory };
+const mapDispatchToProps = { selectCategory,getRemoteData };
 // no need to add dispatch part (no actions)
 export default connect(mapStateToProps, mapDispatchToProps)(Status);
