@@ -12,8 +12,10 @@ import { left } from '@popperjs/core';
 import Button from '@material-ui/core/Button';
 import { addToCart } from '../../store/cart';
 import { getProduct, putProduct } from '../../store/products'
+import { selectProduct } from '../../store/productDtl'
 import superagent from 'superagent';
-import {reduceStockQuantity,getRemoteProductData} from '../../store/actions'
+import { reduceStockQuantity, getRemoteProductData } from '../../store/actions'
+import { Link } from 'react-router-dom';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -69,8 +71,8 @@ const Products = props => {
         console.log('Add To Cart Product ===== :', product);
         if (product.inStock > 0) {
             props.addToCart(product);
-             await reduceStockQuantity(product)
-                props.putProduct(product._id);
+            await reduceStockQuantity(product)
+            props.putProduct(product._id);
             // props.getRemoteProductData();
         } else {
             console.log('Add To Cart Product in Stock ===== :', product.inStock);
@@ -78,25 +80,27 @@ const Products = props => {
         }
 
     }
-    useEffect(async() => {
-      let data = await getRemoteProductData()
-      console.log('**********************************',data);
-       props.getProduct(data)
+    useEffect(async () => {
+        let data = await getRemoteProductData()
+        console.log('**********************************', data);
+        props.getProduct(data)
     }, []);
     return (
         <>
             <div className={classes.root}>
                 <div style={{ display: 'flex' }}>
                     {props.products.map((product, idx) => {
-                        if (product.category == props.selectedCategory) {
+                        if (product.category.toLowerCase() == props.selectedCategory.toLowerCase()) {
                             console.log('>>>>>>props.selectedCategory>>>>>>>', props.selectedCategory);
                             return (
-                                <div key={idx} style={{ border: '1px solid black', width: 'fit-content', padding: '10px', margin: '10px' }}>
-                                    <h3 id='productName'>{product.name}</h3>
-                                    <img id='productImg' src={`${product.img}`} style={{ width: '15rem' }}></img>
-                                    <p>in stok : <strong>{product.inStock}</strong></p>
-                                    <p>price : <strong id='producPrice'>{product.price}</strong></p>
-                                    <Button onClick={() => { handleAddToCart(product) }} variant="contained" color="primary">Order</Button>
+                                <div onClick={()=>{props.selectProduct(product)}} key={idx} style={{ border: '1px solid black', width: 'fit-content', padding: '10px', margin: '10px' }}>
+                                    <Link to="/details">
+                                        <h3 id='productName'>{product.name}</h3>
+                                        <img id='productImg' src={`${product.img}`} style={{ width: '15rem' }}></img>
+                                        <p>in stok : <strong>{product.inStock}</strong></p>
+                                        <p>price : <strong id='producPrice'>{product.price}</strong></p>
+                                    </Link>
+                                        <Button onClick={() => { handleAddToCart(product) }} variant="contained" color="primary">Order</Button>
                                 </div>
                             )
                         }
@@ -114,6 +118,6 @@ const mapStateToProps = state => (
     }
 );
 
-const mapDispatchToProps = { addToCart, getProduct, putProduct };
+const mapDispatchToProps = { addToCart, getProduct, putProduct, selectProduct };
 // no need to add dispatch part (no actions)
 export default connect(mapStateToProps, mapDispatchToProps)(Products);
