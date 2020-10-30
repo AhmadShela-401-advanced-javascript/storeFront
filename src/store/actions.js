@@ -24,12 +24,18 @@ export const getRemoteProductData = () => {
     });
 }
 
-export const reduceStockQuantity = (body) => (dispatch) => {
+export const reduceStockQuantity = (body) => {
     let api =`${productsApi}/${body._id}`
     // return a fucntion that will call superagent API
-    body.inStock = body.inStock - 1;
+    let myBody = {
+        name:body.name,
+        category:body.category,
+        inStock:body.inStock -1,
+        price:body.price
+    }
+    // body.inStock = body.inStock - 1;
     return superagent.put(api)
-    .send(body)
+    .send(myBody)
     .then(data=> {
         // call my action after getting the API response.
         console.log('====Updated===',data.body);

@@ -1,40 +1,3 @@
-
-// import React from 'react';
-// import Button from '@material-ui/core/Button';
-// import Menu from '@material-ui/core/Menu';
-// import MenuItem from '@material-ui/core/MenuItem';
-// import './header.scss'
-
-// export default function SimpleMenu() {
-//   const [anchorEl, setAnchorEl] = React.useState(null);
-
-//   const handleClick = (event) => {
-//     setAnchorEl(event.currentTarget);
-//   };
-
-//   const handleClose = () => {
-//     setAnchorEl(null);
-//   };
-
-//   return (
-//     <div>
-//       <Button id="btnOpenCart" aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
-//         Open Menu
-//       </Button>
-//       <Menu
-//         id="simple-menu"
-//         anchorEl={anchorEl}
-//         keepMounted
-//         open={Boolean(anchorEl)}
-//         onClose={handleClose}
-//       >
-//         <MenuItem onClick={handleClose}>Profile</MenuItem>
-//         <MenuItem onClick={handleClose}>My account</MenuItem>
-//         <MenuItem onClick={handleClose}>Logout</MenuItem>
-//       </Menu>
-//     </div>
-//   );
-// }
 import React from 'react';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -42,20 +5,14 @@ import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
 import Cart from '../cart';
+import { Link } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -140,7 +97,9 @@ export default function PersistentDrawerRight() {
       >
         <Toolbar>
           <Typography variant="h6" noWrap className={classes.title}>
+            <Link to="/">
             Persistent drawer
+            </Link>
           </Typography>
           <IconButton
             color="inherit"

@@ -17,30 +17,7 @@ import { reduceStockQuantity } from '../../store/actions'
 
 
 const ProductDtl = props => {
-    console.log('My product ptops', props);
-
-    // function reduceStockQuantity(body) {
-    //     let productsApi = 'http://api-testtt.herokuapp.com/api/v1/products';
-    //         let api =`${productsApi}/${body._id}`
-    //         // return a fucntion that will call superagent API
-    //         console.log(`---------------${body._id}`,body);
-    //         let myBody = {
-    //         _id: body._id,
-    //          name: body.name, 
-    //          category: body.category, 
-    //          price: body.price, 
-    //          inStock: body.inStock - 1 }
-
-    //         // let myBody = body
-    //         // myBody.inStock = 10;
-    //         superagent.put(api)
-    //         .send(myBody)
-    //         .then(data=> {
-    //             // call my action after getting the API response.
-    //             console.log('====Updated===',data.body);
-    //             props.putProduct(body._id);
-    //         });
-    //     }
+    console.log('My product details ptops', props.product);
 
     const handleAddToCart = async (product) => {
         console.log('Add To Cart Product ===== :', product);
@@ -57,22 +34,15 @@ const ProductDtl = props => {
     }
     return (
         <>
-            <div className={classes.root}>
+            <div className="">
                 <div style={{ display: 'flex' }}>
-                    {props.products.map((product, idx) => {
-                        if (product.category == props.selectedCategory) {
-                            console.log('>>>>>>props.selectedCategory>>>>>>>', props.selectedCategory);
-                            return (
-                                <div key={idx} style={{ border: '1px solid black', width: 'fit-content', padding: '10px', margin: '10px' }}>
-                                    <h3 id='productName'>{product.name}</h3>
-                                    <img id='productImg' src={`${product.img}`} style={{ width: '15rem' }}></img>
-                                    <p>in stok : <strong>{product.inStock}</strong></p>
-                                    <p>price : <strong id='producPrice'>{product.price}</strong></p>
-                                    <Button onClick={() => { handleAddToCart(product) }} variant="contained" color="primary">Order</Button>
-                                </div>
-                            )
-                        }
-                    })}
+                    <div style={{ border: '1px solid black', width: 'fit-content', padding: '10px', margin: '10px' }}>
+                        <h3 id='productName'>{props.product.name}</h3>
+                        <img id='productImg' src={`${props.product.img}`} style={{ width: '15rem' }}></img>
+                        <p>in stok : <strong>{props.product.inStock}</strong></p>
+                        <p>price : <strong id='producPrice'>{props.product.price}</strong></p>
+                        <Button onClick={() => { handleAddToCart(props.product) }} variant="contained" color="primary">Order</Button>
+                    </div>
                 </div>
             </div>
         </>
@@ -81,8 +51,7 @@ const ProductDtl = props => {
 // we only care about state from the store, no actions needed
 const mapStateToProps = state => (
     {
-        products: state.products.products,
-        selectedCategory: state.categories.selectedCategory
+        product: state.productDtl.product
     }
 );
 
