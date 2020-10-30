@@ -13,64 +13,41 @@ import Button from '@material-ui/core/Button';
 import { addToCart } from '../../store/cart';
 import { getProduct, putProduct } from '../../store/products'
 import superagent from 'superagent';
-import {reduceStockQuantity,getRemoteProductData} from '../../store/actions'
+import { reduceStockQuantity } from '../../store/actions'
 
-function TabPanel(props) {
-    const { children, value, index, ...other } = props;
-    const useStyles = makeStyles((theme) => ({
-        root: {
-            '& > *': {
-                margin: theme.spacing(1),
-            },
-        },
-    }));
-    return (
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`simple-tabpanel-${index}`}
-            aria-labelledby={`simple-tab-${index}`}
-            {...other}
-        >
-            {value === index && (
-                <Box p={3}>
-                    <Typography>{children}</Typography>
-                </Box>
-            )}
-        </div>
-    );
-}
-TabPanel.propTypes = {
-    children: PropTypes.node,
-    index: PropTypes.any.isRequired,
-    value: PropTypes.any.isRequired,
-};
-function a11yProps(index) {
-    return {
-        id: `simple-tab-${index}`,
-        'aria-controls': `simple-tabpanel-${index}`,
-    };
-}
-const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-        backgroundColor: theme.palette.background.paper,
-    },
-}));
-const Products = props => {
+
+const ProductDtl = props => {
     console.log('My product ptops', props);
-    const classes = useStyles();
-    const [value, setValue] = React.useState(0);
-    const handleChange = (event, newValue) => {
-        // props.selectCategory(event.target.textContent)
-        setValue(newValue);
-    };
+
+    // function reduceStockQuantity(body) {
+    //     let productsApi = 'http://api-testtt.herokuapp.com/api/v1/products';
+    //         let api =`${productsApi}/${body._id}`
+    //         // return a fucntion that will call superagent API
+    //         console.log(`---------------${body._id}`,body);
+    //         let myBody = {
+    //         _id: body._id,
+    //          name: body.name, 
+    //          category: body.category, 
+    //          price: body.price, 
+    //          inStock: body.inStock - 1 }
+
+    //         // let myBody = body
+    //         // myBody.inStock = 10;
+    //         superagent.put(api)
+    //         .send(myBody)
+    //         .then(data=> {
+    //             // call my action after getting the API response.
+    //             console.log('====Updated===',data.body);
+    //             props.putProduct(body._id);
+    //         });
+    //     }
+
     const handleAddToCart = async (product) => {
         console.log('Add To Cart Product ===== :', product);
         if (product.inStock > 0) {
             props.addToCart(product);
-             await reduceStockQuantity(product)
-                props.putProduct(product._id);
+            await reduceStockQuantity(product)
+            props.putProduct(product._id);
             // props.getRemoteProductData();
         } else {
             console.log('Add To Cart Product in Stock ===== :', product.inStock);
@@ -78,11 +55,6 @@ const Products = props => {
         }
 
     }
-    useEffect(async() => {
-      let data = await getRemoteProductData()
-      console.log('**********************************',data);
-       props.getProduct(data)
-    }, []);
     return (
         <>
             <div className={classes.root}>
@@ -116,4 +88,4 @@ const mapStateToProps = state => (
 
 const mapDispatchToProps = { addToCart, getProduct, putProduct };
 // no need to add dispatch part (no actions)
-export default connect(mapStateToProps, mapDispatchToProps)(Products);
+export default connect(mapStateToProps, mapDispatchToProps)(ProductDtl);
